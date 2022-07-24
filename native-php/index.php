@@ -19,6 +19,8 @@ $rooms = query("SELECT * FROM rooms");
 
 <body>
     <h3>Room List</h3>
+    <a href="insert.php">Add More Room</a>
+    <br><br>
 
     <table border="1" cellpadding="10" cellspacing="0">
         <tr>

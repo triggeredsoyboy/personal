@@ -27,3 +27,19 @@ function query($query)
 
     return $rows;
 }
+
+function tambah($data)
+{
+    $connect = connection();
+
+    $class = htmlspecialchars($data['class']);
+    $price = htmlspecialchars($data['price']);
+    $status = htmlspecialchars($data['status']);
+    $picture = htmlspecialchars($data['picture']);
+
+    $query = "INSERT INTO rooms VALUES (null, '$class', '$price', '$status', '$picture')";
+    mysqli_query($connect, $query);
+
+    echo mysqli_error($connect);
+    return mysqli_affected_rows($connect);
+}
