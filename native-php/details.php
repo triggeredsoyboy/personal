@@ -5,8 +5,7 @@ require 'functions.php';
 $id_room = $_GET['id_room'];
 
 // room's query based on id
-$room = query("SELECT * FROM rooms WHERE id_room = '$id_room'");
-var_dump($room);
+$room = query("SELECT * FROM rooms WHERE id_room = $id_room");
 
 ?>
 <!DOCTYPE html>
@@ -23,9 +22,11 @@ var_dump($room);
     <h3>Room Detail</h3>
 
     <ul>
-        <li>Name: </li>
-        <li>Example: </li>
-        <li><a href="">Book Now</a></li>
+        <li><img src="assets/img/<?= $room['picture']; ?>" alt=""></li>
+        <li><?= $room['class']; ?></li>
+        <li><?= $room['price']; ?></li>
+        <li><?= $room['status']; ?></li>
+        <li><a href="">Edit</a></li>
         <li><a href="index.php">Back to home</a></li>
     </ul>
 </body>

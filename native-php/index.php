@@ -22,7 +22,7 @@ $rooms = query("SELECT * FROM rooms");
 
     <table border="1" cellpadding="10" cellspacing="0">
         <tr>
-            <th>Number</th>
+            <th>#</th>
             <th>Class</th>
             <th>Price</th>
             <th>Status</th>
