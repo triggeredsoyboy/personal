@@ -26,7 +26,7 @@ $room = query("SELECT * FROM rooms WHERE id_room = $id_room");
         <li><?= $room['class']; ?></li>
         <li><?= $room['price']; ?></li>
         <li><?= $room['status']; ?></li>
-        <li><a href="">Edit</a></li>
+        <li><a href="edit.php?id_room=<?= $room['id_room']; ?>">Edit</a> | <a href="delete.php?id_room=<?= $room['id_room']; ?>" onclick="return confirm('Are you sure to delete this data?');">Delete</a></li>
         <li><a href="index.php">Back to home</a></li>
     </ul>
 </body>

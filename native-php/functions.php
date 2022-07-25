@@ -28,7 +28,7 @@ function query($query)
     return $rows;
 }
 
-function tambah($data)
+function add($data)
 {
     $connect = connection();
 
@@ -38,8 +38,36 @@ function tambah($data)
     $picture = htmlspecialchars($data['picture']);
 
     $query = "INSERT INTO rooms VALUES (null, '$class', '$price', '$status', '$picture')";
-    mysqli_query($connect, $query);
 
-    echo mysqli_error($connect);
+    mysqli_query($connect, $query) or die(mysqli_error($connect));
+    return mysqli_affected_rows($connect);
+}
+
+function delete($id_room)
+{
+    $connect = connection();
+
+    mysqli_query($connect, "DELETE FROM rooms WHERE id_room = $id_room") or die(mysqli_error($connect));
+    return mysqli_affected_rows($connect);
+}
+
+function edit($data)
+{
+    $connect = connection();
+
+    $id_room = $data['id_room'];
+    $class = htmlspecialchars($data['class']);
+    $price = htmlspecialchars($data['price']);
+    $status = htmlspecialchars($data['status']);
+    $picture = htmlspecialchars($data['picture']);
+
+    $query = "UPDATE rooms SET
+                class = '$class',
+                price = '$price',
+                status = '$status',
+                picture = '$picture'
+                WHERE id_room = $id_room";
+
+    mysqli_query($connect, $query) or die(mysqli_error($connect));
     return mysqli_affected_rows($connect);
 }

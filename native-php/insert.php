@@ -3,7 +3,7 @@
 require 'functions.php';
 
 if (isset($_POST['insert'])) {
-  if (tambah($_POST) > 0) {
+  if (add($_POST) > 0) {
     echo "<script>
       alert('Data added succesfuly!');
       document.location.href = 'index.php';
