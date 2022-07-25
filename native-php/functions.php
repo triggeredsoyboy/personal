@@ -71,3 +71,21 @@ function edit($data)
     mysqli_query($connect, $query) or die(mysqli_error($connect));
     return mysqli_affected_rows($connect);
 }
+
+function search($keyword)
+{
+    $connect = connection();
+
+    $query = "SELECT * FROM rooms
+                WHERE class LIKE '%$keyword%' OR
+                price LIKE '%$keyword%'";
+
+    $result = mysqli_query($connect, $query);
+
+    $rows = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+
+    return $rows;
+}

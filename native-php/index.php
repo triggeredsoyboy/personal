@@ -6,6 +6,11 @@ require 'functions.php';
 // assign to rooms variable
 $rooms = query("SELECT * FROM rooms");
 
+// when search button clicked
+if (isset($_POST['search'])) {
+    $rooms = search($_POST['keyword']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +27,12 @@ $rooms = query("SELECT * FROM rooms");
     <a href="insert.php">Add More Room</a>
     <br><br>
 
+    <form action="" method="POST">
+        <input type="text" name="keyword" size="45" placeholder="Enter search keyword" autocomplete="off" autofocus>
+        <button type="submit" name="search">Search</button>
+    </form>
+    <br>
+
     <table border="1" cellpadding="10" cellspacing="0">
         <tr>
             <th>#</th>
@@ -30,6 +41,14 @@ $rooms = query("SELECT * FROM rooms");
             <th>Status</th>
             <th>Action</th>
         </tr>
+
+        <?php if (empty($rooms)) : ?>
+            <tr>
+                <td colspan="5">
+                    <p>Room's data not found!</p>
+                </td>
+            </tr>
+        <?php endif; ?>
 
         <?php $i = 1;
         foreach ($rooms as $r) : ?>
