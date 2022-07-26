@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['login'])) {
+    header("Location: login.php");
+    exit;
+}
 
 // make a connections with functions file
 require 'functions.php';
@@ -23,6 +29,7 @@ if (isset($_POST['search'])) {
 </head>
 
 <body>
+    <a href="logout.php">Logout</a>
     <h3>Room List</h3>
     <a href="insert.php">Add More Room</a>
     <br><br>

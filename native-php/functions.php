@@ -89,3 +89,86 @@ function search($keyword)
 
     return $rows;
 }
+
+function login($data)
+{
+    $connect = connection();
+
+    $username = htmlspecialchars($data['username']);
+    $password = htmlspecialchars($data['password']);
+
+    // check username
+    if ($staff = query("SELECT * FROM staffs WHERE username = '$username'")) {
+        // check password
+        if (password_verify($password, $staff['password'])) {
+            // set session
+            $_SESSION['login'] = true;
+
+            header("Location: index.php");
+            exit;
+        }
+    }
+    return [
+        'error' => true,
+        'message' => 'Username/password is wrong!'
+    ];
+}
+
+function register($data)
+{
+    $connect = connection();
+
+    $username = htmlspecialchars(strtolower($data['username']));
+    $password1 = mysqli_real_escape_string($connect, $data['password1']);
+    $password2 = mysqli_real_escape_string($connect, $data['password2']);
+
+    // if username or password is empty
+    if (empty($username) || empty($password1) || empty($password2)) {
+        echo "<script>
+            alert('Username/password cannot be blank!');
+            document.location.href = 'register.php';
+        </script>";
+
+        return false;
+    }
+
+    // if username already used
+    if (query("SELECT * FROM staffs WHERE username = '$username'")) {
+        echo "<script>
+            alert('Username not available!');
+            document.location.href = 'register.php';
+        </script>";
+
+        return false;
+    }
+
+    // if password and confirm password is not match
+    if ($password1 !== $password2) {
+        echo "<script>
+            alert('Password is not match!');
+            document.location.href = 'register.php';
+        </script>";
+
+        return false;
+    }
+
+    // if password less than 5 digit
+    if (strlen($password1) < 5) {
+        echo "<script>
+            alert('Password is to weak!');
+            document.location.href = 'register.php';
+        </script>";
+
+        return false;
+    }
+
+    // if username and password is true
+    // encrypt password;
+    $new_password = password_hash($password1, PASSWORD_DEFAULT);
+
+    // insert to staffs table
+    $query = "INSERT INTO staffs VALUES (null, null, null, null, '$username', '$new_password', null)";
+
+    mysqli_query($connect, $query) or die(mysqli_error($connect));
+    return mysqli_affected_rows($connect);
+}
