@@ -35,41 +35,45 @@ if (isset($_POST['search'])) {
     <br><br>
 
     <form action="" method="POST">
-        <input type="text" name="keyword" size="45" placeholder="Enter search keyword" autocomplete="off" autofocus>
-        <button type="submit" name="search">Search</button>
+        <input type="text" name="keyword" size="45" placeholder="Enter search keyword" autocomplete="off" autofocus class="keyword">
+        <button type="submit" name="search" class="search-button">Search</button>
     </form>
     <br>
 
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-            <th>#</th>
-            <th>Class</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-
-        <?php if (empty($rooms)) : ?>
+    <div class="container">
+        <table border="1" cellpadding="10" cellspacing="0">
             <tr>
-                <td colspan="5">
-                    <p>Room's data not found!</p>
-                </td>
+                <th>#</th>
+                <th>Class</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
-        <?php endif; ?>
 
-        <?php $i = 1;
-        foreach ($rooms as $r) : ?>
-            <tr>
-                <td><?= $i++; ?></td>
-                <td><?= $r['class']; ?></td>
-                <td><?= $r['price']; ?></td>
-                <td><?= $r['status']; ?></td>
-                <td>
-                    <a href="details.php?id_room=<?= $r['id_room']; ?>">See more ...</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+            <?php if (empty($rooms)) : ?>
+                <tr>
+                    <td colspan="5">
+                        <p>Room's data not found!</p>
+                    </td>
+                </tr>
+            <?php endif; ?>
+
+            <?php $i = 1;
+            foreach ($rooms as $r) : ?>
+                <tr>
+                    <td><?= $i++; ?></td>
+                    <td><?= $r['class']; ?></td>
+                    <td><?= $r['price']; ?></td>
+                    <td><?= $r['status']; ?></td>
+                    <td>
+                        <a href="details.php?id_room=<?= $r['id_room']; ?>">See more ...</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+
+    <script src="js/script.js"></script>
 </body>
 
 </html>

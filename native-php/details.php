@@ -29,7 +29,7 @@ $room = query("SELECT * FROM rooms WHERE id_room = $id_room");
     <h3>Room Detail</h3>
 
     <ul>
-        <li><img src="assets/img/<?= $room['picture']; ?>" alt=""></li>
+        <li><img src="assets/img/<?= $room['picture']; ?>" alt="" width="250px"></li>
         <li><?= $room['class']; ?></li>
         <li><?= $room['price']; ?></li>
         <li><?= $room['status']; ?></li>

@@ -28,6 +28,61 @@ function query($query)
     return $rows;
 }
 
+function upload()
+{
+    $file_name = $_FILES['picture']['name'];
+    $file_type = $_FILES['picture']['type'];
+    $file_size = $_FILES['picture']['size'];
+    $error = $_FILES['picture']['error'];
+    $tmp_file = $_FILES['picture']['tmp_name'];
+
+    // if no one picture selected
+    if ($error == 4) {
+        // echo "<script>
+        //     alert('Please choose your picture!');
+        // </script>";
+        return 'default.png';
+    }
+
+    // check file extentsion
+    $extension_list = ['jpg', 'jpeg', 'png'];
+    $file_extension = explode('.', $file_name);
+    $file_extension = strtolower(end($file_extension));
+
+    if (!in_array($file_extension, $extension_list)) {
+        echo "<script>
+            alert('The file is not picture!');
+        </script>";
+        return false;
+    }
+
+    // check file type
+    if ($file_type != 'image/jpeg' && $file_type != 'image/png') {
+        echo "<script>
+            alert('The file is not picture!');
+        </script>";
+        return false;
+    }
+
+    // check file size
+    // if maximal size is 5mb
+    if ($file_size > 5000000) {
+        echo "<script>
+            alert('The size is to big!');
+        </script>";
+        return false;
+    }
+
+    // picture is ready to upload
+    // generate new file name
+    $new_file_name = uniqid();
+    $new_file_name .= '.';
+    $new_file_name .= $file_extension;
+    move_uploaded_file($tmp_file, 'assets/img/' . $new_file_name);
+
+    return $new_file_name;
+}
+
 function add($data)
 {
     $connect = connection();
@@ -35,7 +90,14 @@ function add($data)
     $class = htmlspecialchars($data['class']);
     $price = htmlspecialchars($data['price']);
     $status = htmlspecialchars($data['status']);
-    $picture = htmlspecialchars($data['picture']);
+    // $picture = htmlspecialchars($data['picture']);
+
+    // upload picture
+    $picture = upload();
+    if (!$picture) {
+        return false;
+    }
+
 
     $query = "INSERT INTO rooms VALUES (null, '$class', '$price', '$status', '$picture')";
 
@@ -47,6 +109,11 @@ function delete($id_room)
 {
     $connect = connection();
 
+    // delete picture in img folder
+    $room = query("SELECT * FROM rooms WHERE id_room = $id_room");
+    if ($room['picture'] != 'default.png') {
+        unlink('assets/img/' . $room['picture']);
+    }
     mysqli_query($connect, "DELETE FROM rooms WHERE id_room = $id_room") or die(mysqli_error($connect));
     return mysqli_affected_rows($connect);
 }
@@ -59,7 +126,16 @@ function edit($data)
     $class = htmlspecialchars($data['class']);
     $price = htmlspecialchars($data['price']);
     $status = htmlspecialchars($data['status']);
-    $picture = htmlspecialchars($data['picture']);
+    $old_picture = htmlspecialchars($data['old_picture']);
+
+    $picture = upload();
+    if (!$picture) {
+        return false;
+    }
+
+    if ($picture == 'default.png') {
+        $picture = $old_picture;
+    }
 
     $query = "UPDATE rooms SET
                 class = '$class',
